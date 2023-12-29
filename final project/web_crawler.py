@@ -51,8 +51,8 @@ for num in product_num_elements:
 # 滾動頁面在pchome設定中至多顯示20筆資料
 # 由於在測試中約1.2秒可以完整顯示出20筆資料，因此設定1.2秒作為間隔
 # 用上面所得totalNum，除以每次滾動可抓取20筆資料再加上1，作為迴圈的次數，便大約可抓取全部資料
-# 若有遺漏，忽略，因為最後的資料與使用者所需大多不相符
-for i in range(int(totalNum) // 20 + 1):
+# 若有遺漏則忽略，因為最後的資料與使用者所需大多不相符
+for i in range(int(totalNum) // 20 + 2):
     driver.execute_script("window.scrollBy(0, document.body.scrollHeight);")
     sleep(1.2)
 
@@ -106,7 +106,7 @@ for block in product_blocks:
 
 
 # 將 DataFrame 寫入 Excel 文件
-with xlsxwriter.Workbook("product_data.xlsx") as workbook:
+with xlsxwriter.Workbook(".\\final project\\product_data.xlsx") as workbook:
     worksheet = workbook.add_worksheet()
 
     # 產品名稱
