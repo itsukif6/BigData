@@ -2,19 +2,18 @@
 # From: 高雄師範大學 軟體系三年級
 # 學號(id): 411077010
 # 開發時間: 2023年11月~2024年1月
-# 爬蟲工具: 可抓取衣料名稱、筆數、價格、存貨量...等
+# 爬蟲工具: 可抓取資料名稱、筆數、價格、存貨量...等
 # 預設瀏覽器: chrome
 # 測試時使用chrome版本: 120.0.6099.109
 # 使用的爬蟲工具: webdriver(chromedriver.exe)
 # webdriver相對路徑: .\\final project\\chromedriver.exe
-# 測試用網址: https://ecshweb.pchome.com.tw/search/v3.3/?q=corsair%20void%20elite&scope=all
+# 測試用網址: https://ecshweb.pchome.com.tw/search/v3.3/?q=corsair&scope=all
 # %20為pchome預設的空格輸入
 # 測試時網速: 60Mbps
 
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
-import pandas as pd
 import xlsxwriter
 
 chrome_options = webdriver.ChromeOptions()
@@ -51,7 +50,8 @@ for num in product_num_elements:
 # 滾動頁面在pchome設定中至多顯示20筆資料
 # 由於在測試中約1.2秒可以完整顯示出20筆資料，因此設定1.2秒作為間隔
 # 用上面所得totalNum，除以每次滾動可抓取20筆資料再加上1，作為迴圈的次數，便大約可抓取全部資料
-# 若有遺漏則忽略，因為最後的資料與使用者所需大多不相符
+# 若有遺漏，多為網速太慢所致，但可忽略，因為最後的資料與使用者所需大多不相符
+# 若要完整呈現，可將58行的sleep數字改大
 for i in range(int(totalNum) // 20 + 2):
     driver.execute_script("window.scrollBy(0, document.body.scrollHeight);")
     sleep(1.2)
@@ -81,7 +81,7 @@ for block in product_blocks:
             # 測試用輸出:
             # print(name)
     else:
-        pname.append("未找到名稱為 CORSAIR VOID RGB ELITE 的產品")
+        pname.append("未找到該名稱產品")
 
     # 提取價格
     price = block.find_all("span", class_="price")
